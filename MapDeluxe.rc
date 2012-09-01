@@ -1,0 +1,321 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\MapDeluxe.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\MapDeluxe.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DREAMATRIX_DIALOG DIALOGEX 0, 0, 467, 390
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "MapDeluxe"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_TREE_FILE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,0,72,108,318
+    PUSHBUTTON      "打开",IDC_BUTTON_OPEN,30,18,30,18
+    PUSHBUTTON      "保存",IDC_BUTTON_SAVE,60,18,24,18
+    PUSHBUTTON      "另存为",IDC_BUTTON_SAVEAS,84,18,24,18
+    EDITTEXT        IDC_EDIT_FILE,0,60,108,12,ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "地图信息",IDC_STATIC_GROPMAPINFO,114,6,348,114
+    EDITTEXT        IDC_EDIT_STEP_NUMBER,121,16,90,12,ES_AUTOHSCROLL | ES_READONLY
+    COMBOBOX        IDC_COMBO_BGM,121,39,103,12,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "BGM",IDC_STATIC_BGM,120,30,30,8
+    CONTROL         "地图数据已压缩",IDC_CHECK_LZ77,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,213,14,60,12
+    EDITTEXT        IDC_EDIT_CLIP_X,162,54,24,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_CLIP_Y,162,66,24,12,ES_AUTOHSCROLL
+    LTEXT           "左右剪裁",IDC_STATIC_CLIP_X,120,54,42,12
+    LTEXT           "上下剪裁",IDC_STATIC_CLIP_Y,120,66,42,12
+    LTEXT           "起始横坐标",IDC_STATIC_BEGIN_X,192,54,48,12
+    LTEXT           "起始纵坐标",IDC_STATIC_BEGIN_Y,192,66,48,12
+    EDITTEXT        IDC_EDIT_BEGIN_X,240,54,24,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_BEGIN_Y,240,66,24,12,ES_AUTOHSCROLL
+    LTEXT           "前景图像库",IDC_STATIC_FRT,336,42,54,12
+    LTEXT           "背景图像库",IDC_STATIC_BCK,402,42,48,12
+    LTEXT           "调色板地址",IDC_STATIC_PLT,288,54,42,12
+    LTEXT           "瓦图地址",IDC_STATIC_TILL,294,66,42,12
+    LTEXT           "图形映射地址",IDC_STATIC_GRAMAP,282,78,54,12
+    EDITTEXT        IDC_EDIT_PLT_FRT,336,54,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TILL_FRT,336,66,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GRAMAP_FRT,336,78,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PLT_BCK,402,54,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TILL_BCK,402,66,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GRAMAP_BCK,402,78,54,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_GRA_FRT,336,90,54,12,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_GRA_BCK,402,90,54,12,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "预设值",IDC_STATIC_GRA_PRESET,300,90,36,12
+    LTEXT           "unknown0x36",IDC_STATIC_UNK36,120,90,48,12
+    EDITTEXT        IDC_EDIT_UNK36,168,90,48,12,ES_AUTOHSCROLL
+    CONTROL         "unknown0x3E",IDC_CHECK_UNK3E,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,79,54,12
+    LTEXT           "动态瓦图库",IDC_STATIC_GRA_ANI,336,102,42,12
+    LTEXT           "unknown0x54",IDC_STATIC_UNK54,120,102,48,12
+    EDITTEXT        IDC_EDIT_UNK54,168,102,48,12,ES_AUTOHSCROLL
+    CONTROL         "unknown0x55",IDC_CHECK_UNK55,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,90,54,12
+    CONTROL         "背景滚动",IDC_CHECK_BCKROLL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,102,48,12
+    EDITTEXT        IDC_EDIT_BCK_MOV,168,78,48,12,ES_AUTOHSCROLL
+    LTEXT           "背景移动速率",IDC_STATIC_BCK_MOV,120,78,48,12
+    COMBOBOX        IDC_COMBO_SPCMAP,229,39,51,12,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "特殊地图",IDC_STATIC,228,30,42,8
+    PUSHBUTTON      "新建",IDC_BUTTON_NEW,0,18,30,18
+    EDITTEXT        IDC_EDIT_GRA_ANI,378,102,60,12,ES_AUTOHSCROLL
+    SCROLLBAR       IDC_SCROLLBAR_MAPH,126,150,264,12
+    SCROLLBAR       IDC_SCROLLBAR_MAPV,114,162,12,108,SBS_VERT
+    COMBOBOX        IDC_COMBO_MAPCHG,118,123,72,12,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "",IDC_STATIC_GRID_INFO,396,150,66,114,WS_BORDER,WS_EX_CLIENTEDGE
+    SCROLLBAR       IDC_SCROLLBAR_GRALIB,132,276,12,114,SBS_VERT
+    LTEXT           "",IDC_STATIC_LIB_INFO,372,290,84,48,WS_BORDER,WS_EX_CLIENTEDGE
+    ICON            IDR_MAINFRAME,IDC_STATIC_ICON,0,0,20,20
+    LTEXT           "欢迎使用MapDeluxe！",IDC_STATIC_TITLE,22,4,84,12
+    PUSHBUTTON      "测试占用空间",IDC_BUTTON_SAVE_TEST,402,120,60,30
+    LTEXT           "在编辑完地图后请一定要按右边的按钮测试一下地图占用空间！不听话的话到了保存文件的时候发生空间溢出导致数据丢失的时候可别哭哦~",IDC_STATIC_SAVE_TEST,248,122,153,27
+    CONTROL         "掀开",IDC_CHECK_NEST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,123,139,27,9
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",WS_BORDER,0,48,108,12
+    PUSHBUTTON      "生成最终版游戏",IDC_BUTTON_SAVE_FINAL,0,36,108,12
+    PUSHBUTTON      "修改地图尺寸",IDC_BUTTON_RESIZE,276,12,48,18
+    CONTROL         "自动填充掀开数据",IDC_CHECK_NEST_AUTO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,153,139,76,9
+    PUSHBUTTON      "传送门列表...",IDC_BUTTON_DOOR,330,12,54,18
+    PUSHBUTTON      "清空地图",IDC_CLEAR_MAP,396,264,66,12
+    CONTROL         "键盘控制",IDC_ALLOW_KEY_CONTROL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,397,278,43,10
+END
+
+IDD_RESIZE DIALOGEX 0, 0, 154, 105
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "修改地图尺寸..."
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,48,90,50,14
+    PUSHBUTTON      "取消",IDCANCEL,102,90,50,14
+    LTEXT           "当前尺寸:",IDC_STATIC_SIZE,6,6,96,12,0,WS_EX_CLIENTEDGE
+    LTEXT           "新尺寸:",IDC_STATIC_RESIZE,6,24,30,12
+    EDITTEXT        IDC_EDIT_WIDTH,36,24,48,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_HEIGHT,96,24,54,12,ES_AUTOHSCROLL
+    LTEXT           "×",IDC_STATIC,88,25,8,12
+    LTEXT           "将已有的地图数据...",IDC_STATIC_MOVEDATA,6,42,78,12
+    CONTROL         "左上角对齐",IDC_RADIO_LEFT_TOP,"Button",BS_AUTORADIOBUTTON,6,54,54,12
+    CONTROL         "右上角对齐",IDC_RADIO_RIGHT_TOP,"Button",BS_AUTORADIOBUTTON,66,54,54,12
+    CONTROL         "左下角对齐",IDC_RADIO_LEFT_BUTTON,"Button",BS_AUTORADIOBUTTON,6,66,54,12
+    CONTROL         "右下角对齐",IDC_RADIO_RIGHT_BUTTON,"Button",BS_AUTORADIOBUTTON,66,66,54,12
+END
+
+IDD_DOOR DIALOGEX 0, 0, 316, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "传送门数据"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,205,162,50,14
+    PUSHBUTTON      "取消",IDCANCEL,259,162,50,14
+    CONTROL         "",IDC_LIST_DOOR,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,6,6,306,144
+    PUSHBUTTON      "添加",IDC_DOOR_ADD,7,162,44,14
+    PUSHBUTTON      "删除",IDC_DOOR_DELETE,51,162,44,14
+END
+
+IDD_DOOR_ADD DIALOGEX 0, 0, 166, 105
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "添加传送门数据项"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,60,90,50,14
+    PUSHBUTTON      "取消",IDCANCEL,114,90,50,14
+    COMBOBOX        IDC_COMBO_DOORCLASS,6,6,156,12,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Param0",IDC_STATIC_DOOR_P0,6,24,102,12
+    LTEXT           "Param0",IDC_STATIC_DOOR_P1,6,36,102,12
+    LTEXT           "Param0",IDC_STATIC_DOOR_P2,6,48,102,12
+    LTEXT           "Param0",IDC_STATIC_DOOR_P3,6,60,102,12
+    LTEXT           "Param0",IDC_STATIC_DOOR_P4,6,72,102,12
+    EDITTEXT        IDC_EDIT_DOOR_P0,108,24,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DOOR_P1,108,36,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DOOR_P2,108,48,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DOOR_P3,108,60,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DOOR_P4,108,72,54,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,1,0,1
+ PRODUCTVERSION 2,1,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "wwylele"
+            VALUE "FileVersion", "2.1.0.1"
+            VALUE "InternalName", "MapDeluxe.exe"
+            VALUE "OriginalFilename", "MapDeluxe.exe"
+            VALUE "ProductName", "MapDeluxe"
+            VALUE "ProductVersion", "2.1.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DREAMATRIX_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 460
+        VERTGUIDE, 222
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 383
+    END
+
+    IDD_RESIZE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 147
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+
+    IDD_DOOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_DOOR_ADD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 159
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// ROM
+//
+
+IDR_ROM                 ROM                     "res\\RomRebuild.gba"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_DET                 BITMAP                  "res\\bitmap1.bmp"
+IDB_NEST                BITMAP                  "res\\bmp00001.bmp"
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\MapDeluxe.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"      // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
