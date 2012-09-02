@@ -2,16 +2,16 @@
 //编写:wwylele
 /**
 *TODO-LIST:
-1、撤销·恢复 //#当操作很多的时候会麻烦，而备份地图又会导致效率下降，纠结>_<
-2、按右键清除当前方块//#清除的定义很模糊，干脆再弄一个背景色好了
-3、按鼠标中键（即按下滚轮）选取方块//#吸管？
-4、快速查找方块编号//#个人觉得用WASD控制更有效
-5、掀开数据集体填补（比如按住ctrl再布置掀开数据的话可以一次把所有连在一起的掀开数据填好//#（不懂……）
-6、绘图式布置方块（比如像画方块一样通过拖曳来一次填好一个方块阵）//#正在考虑
-7、测试用选项（就是用来测试当前关卡效果什么的，不行的话就弄个“打开模拟器”的按钮）//#……无解
-8、在设置传送门，初始坐标等等信息时有预览图//#……等待乐乐
-9、加个最小化按钮= =//#……
-10、按某个快捷键能拖曳移动方块（比如按住shift）//#可以用吸管代替=w=
+（等待）1、撤销·恢复 //#当操作很多的时候会麻烦，而备份地图又会导致效率下降，纠结>_<
+（完成）2、按右键清除当前方块//#清除的定义很模糊，干脆再弄一个背景色好了
+（完成）3、按鼠标中键（即按下滚轮）选取方块//#吸管？
+（弃坑）4、快速查找方块编号//#个人觉得用WASD控制更有效
+（等待）5、掀开数据集体填补（比如按住ctrl再布置掀开数据的话可以一次把所有连在一起的掀开数据填好//#（不懂……）
+（进行）6、绘图式布置方块（比如像画方块一样通过拖曳来一次填好一个方块阵）//#正在考虑
+（弃坑）7、测试用选项（就是用来测试当前关卡效果什么的，不行的话就弄个“打开模拟器”的按钮）//#……无解
+（等待）8、在设置传送门，初始坐标等等信息时有预览图//#……等待乐乐
+（完成）9、加个最小化按钮= =//#……
+（弃坑）10、按某个快捷键能拖曳移动方块（比如按住shift）//#可以用吸管代替=w=
 */
 
 #include "stdafx.h"
@@ -22,6 +22,7 @@
 #include "DlgResize.h"
 #include "DlgDoor.h"
 #include "DebugConsole.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -123,6 +124,9 @@ BEGIN_MESSAGE_MAP(CMapDeluxeDlg, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_MAPCHG, &CMapDeluxeDlg::OnCbnSelchangeComboMapchg)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
+	ON_WM_MBUTTONDOWN()
 	ON_BN_CLICKED(IDC_BUTTON_SAVE_TEST, &CMapDeluxeDlg::OnBnClickedButtonSaveTest)
 	ON_BN_CLICKED(IDC_BUTTON_SAVEAS, &CMapDeluxeDlg::OnBnClickedButtonSaveas)
 	ON_BN_CLICKED(IDC_CHECK_NEST, &CMapDeluxeDlg::OnBnClickedCheckNest)
@@ -147,9 +151,13 @@ END_MESSAGE_MAP()
 BOOL CMapDeluxeDlg::OnInitDialog()
 {
 	InitConsole();
-	printf("MapDeluxe-dev v2.0.0.1p Initializing.\n");
+	CString strVer=GetProductVersion();
+	CString str;
+	printf("MapDeluxe-dev Initializing.\n");
 	AlphaValue=128;
 	LockRefreshing=false;
+	MouseLState=false;
+	MouseRState=false;
 	
 	BFunction.BlendOp=AC_SRC_OVER;
 	BFunction.BlendFlags=0;
@@ -157,8 +165,7 @@ BOOL CMapDeluxeDlg::OnInitDialog()
 	BFunction.AlphaFormat=AC_SRC_ALPHA;
 	
 	CDialog::OnInitDialog();
-	CString str;
-	CString strVer=GetProductVersion();
+	
 	TCHAR auth[]=_T("vuvh`f^");
 	for(int i=0;i<7;i++)auth[i]+=i+1;//=w=被我发现了
 	str.Format(_T("MapDeluxe 版本:%s 作者:%s"),strVer.GetBuffer(),auth);
@@ -236,10 +243,11 @@ BOOL CMapDeluxeDlg::OnInitDialog()
 	m_ComboMapChg.SelectString(0,_T("图像"));
 
 	m_CheckNestAuto.SetCheck(TRUE);
+	m_AllowKeyControl.SetCheck(TRUE);
 	
 	
 	
-	printf("MapDeluxe-dev v2.0.0.1p Initialized.\n");
+	printf("MapDeluxe-dev Initialized.\n");
 	return TRUE;  
 }
 void CMapDeluxeDlg::ClearData()
@@ -331,7 +339,11 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 			case 0:
 				//gralib_len
 				cur_chg-=16;
-				if (cur_chg>65000) cur_chg=gralib_len-65536+cur_chg;
+				if (cur_chg>65000) {
+					cur_chg+=16;
+					if ((gralib_len%16)>=cur_chg) cur_chg=gralib_len-(gralib_len%16-cur_chg);
+					else cur_chg=gralib_len-(16-cur_chg+gralib_len%16);
+					}
 				break;
 			case 1:
 				//256
@@ -389,7 +401,7 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 				break;
 			case 1:
 				//256
-				cur_chg+=16;
+				cur_chg+=1;
 				if (cur_chg>=256) cur_chg-=256;
 				break;
 			}
@@ -412,7 +424,7 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 			case 0:
 				//gralib_len
 				cur_chg+=16;
-				if (cur_chg>=gralib_len) cur_chg-=gralib_len;
+				if (cur_chg>=gralib_len) cur_chg=cur_chg%16;
 				break;
 			case 1:
 				//256
@@ -428,6 +440,30 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 			//UpdateGridInfo();
 			//UpdateLibInfo();
 			m_ScrollBarGraLib.SetScrollPos((cur_chg/16)*16,TRUE);
+		}
+		if (pMsg->wParam=='Z'){
+			CString str;
+			m_ComboMapChg.GetWindowText(str);
+			switch(m_ComboMapChg.FindString(-1,str.GetBuffer()))
+			{
+			case 0:
+				m_ComboMapChg.SelectString(0,_T("判定"));
+				break;
+			case 1:
+				//256
+				m_ComboMapChg.SelectString(0,_T("图像"));				
+				break;
+			}
+			CMapDeluxeDlg::OnCbnSelchangeComboMapchg();
+		}
+		if (pMsg->wParam=='X'){
+			if (m_CheckNest.GetCheck()){
+				m_CheckNest.SetCheck(FALSE);
+			}
+			else {
+				m_CheckNest.SetCheck(TRUE);
+			}
+			CMapDeluxeDlg::OnBnClickedCheckNest();
 		}
 	}}
 	return CDialog::PreTranslateMessage(pMsg);
@@ -672,6 +708,7 @@ void CMapDeluxeDlg::OnNMDblclkTreeFile(NMHDR *pNMHDR, LRESULT *pResult)
 
 			ResetGraLibScrollBar();
 			cur_chg=0;
+			cur_chgR=0;
 
 			CDC* pDC=GetDC();
 			m_BmpMap.DeleteObject();
@@ -1266,6 +1303,8 @@ void CMapDeluxeDlg::OnMouseMove(UINT nFlags, CPoint point)
 		cur_sel=tcur_sel;
 		if ((cur_step!=0xFFFF)&&(MouseLState))
 		DrawGrid();
+		if ((cur_step!=0xFFFF)&&(MouseRState))
+		DrawGridR();
 		//PaintMap();
 		PaintMapTile(cur_x,cur_y);
 		PaintGraLib();
@@ -1322,14 +1361,16 @@ void CMapDeluxeDlg::UpdateLibInfo()
 		m_ComboMapChg.GetWindowText(str2);
 		if(m_ComboMapChg.FindString(-1,str2.GetBuffer())==1)
 		{
-			str.Format(_T("已选中编号:%d(%s)"),
-				cur_chg,CodeTran_Det((u8)cur_chg)
+			str.Format(_T("已选中编号:%d(%s)/%d(%s)"),
+				cur_chg,CodeTran_Det((u8)cur_chg),
+				cur_chgR,CodeTran_Det((u8)cur_chgR)
 			);
 		}
 		else
 		{
-			str.Format(_T("已选中编号:%d"),
-				cur_chg
+			str.Format(_T("已选中编号:%d/%d"),
+				cur_chg,
+				cur_chgR
 				);
 		}
 		m_StaticLibInfo.SetWindowText(str.GetBuffer());
@@ -1341,14 +1382,16 @@ void CMapDeluxeDlg::UpdateLibInfo()
 	m_ComboMapChg.GetWindowText(str2);
 	if(m_ComboMapChg.FindString(-1,str2.GetBuffer())==1)
 	{
-		str.Format(_T("已选中编号:%d(%s)\n当前编号:%d(%s)"),
-			cur_chg,CodeTran_Det((u8)cur_chg),cur_sel,CodeTran_Det((u8)cur_sel)
+		str.Format(_T("已选中编号:%d(%s)/%d(%s)\n当前编号:%d(%s)"),
+			cur_chg,CodeTran_Det((u8)cur_chg),
+			cur_chgR,CodeTran_Det((u8)cur_chgR),
+			cur_sel,CodeTran_Det((u8)cur_sel)
 		);
 	}
 	else
 	{
-		str.Format(_T("已选中编号:%d\n当前编号:%d"),
-			cur_chg,cur_sel
+		str.Format(_T("已选中编号:%d/%d\n当前编号:%d"),
+			cur_chg,cur_chgR,cur_sel
 			);
 	}
 
@@ -1359,6 +1402,7 @@ void CMapDeluxeDlg::OnCbnSelchangeComboMapchg()
 	if(cur_step==0xFFFF)return;
 	ResetGraLibScrollBar();
 	cur_chg=0;
+	cur_chgR=0;
 	CDC* pDC=GetDC();
 	PaintMap();
 	PaintGraLib();
@@ -1400,7 +1444,7 @@ void CMapDeluxeDlg::ResetGraLibScrollBar()
 void CMapDeluxeDlg::PaintGraLib()
 {
 	if(cur_step==0xFFFF)return;
-	static CPen PenCur(PS_SOLID,1,RGB(255,0,0)),PenChg(PS_SOLID,2,RGB(255,0,0));
+	static CPen PenCur(PS_SOLID,1,RGB(255,0,0)),PenChg(PS_SOLID,2,RGB(255,0,0)),PenChgR(PS_SOLID,2,RGB(0,0,255));
 	CBrush BrushNull;
 	BrushNull.CreateStockObject(NULL_BRUSH);
 
@@ -1429,6 +1473,8 @@ void CMapDeluxeDlg::PaintGraLib()
 		m_TmpDC.Rectangle((cur_sel%16)*16,cur_sel/16*16,(cur_sel%16)*16+16,cur_sel/16*16+16);
 		
 	}
+	m_TmpDC.SelectObject(&PenChgR);
+	m_TmpDC.Rectangle((cur_chgR%16)*16,cur_chgR/16*16,(cur_chgR%16)*16+16,cur_chgR/16*16+16);
 	m_TmpDC.SelectObject(&PenChg);
 	m_TmpDC.Rectangle((cur_chg%16)*16,cur_chg/16*16,(cur_chg%16)*16+16,cur_chg/16*16+16);
 
@@ -1458,9 +1504,6 @@ void CMapDeluxeDlg::PresentGraLib(CDC* pDC)
 	pDC->BitBlt(vsrc.right,vsrc.top,
 		256,vsrc.bottom-vsrc.top,&m_TmpDC,
 		0,vsp,SRCCOPY);
-}
-void CMapDeluxeDlg::OnLButtonUp(UINT nFlags, CPoint point){
-	MouseLState=false;
 }
 void CMapDeluxeDlg::DrawGrid()
 {
@@ -1495,6 +1538,44 @@ void CMapDeluxeDlg::DrawGrid()
 		cur_chg=cur_sel;
 	}
 }
+
+void CMapDeluxeDlg::DrawGridR()
+{
+	int nest=m_CheckNest.GetCheck()?1:0;
+
+	if(cur_x!=0xFFFF)
+	{
+		CString str;
+		m_ComboMapChg.GetWindowText(str);
+		if(*(u32*)&map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width]==0xFFFFFFFF)
+		{
+			*(u32*)&map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width]=0;
+		}
+		switch(m_ComboMapChg.FindString(-1,str.GetBuffer()))
+		{
+		case 0:
+			map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width].gra=cur_chgR;
+			break;
+		case 1:
+			map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width].det=(u8)cur_chgR;
+			if(nest==0 && m_CheckNestAuto.GetCheck())
+			{
+				*(u32*)&map[1][cur_step][cur_x+cur_y*step_header[cur_step].width]=
+					CodeTran_DetNset((u8)cur_chgR)?0:0xFFFFFFFF;
+			}
+			break;
+		}
+
+	}
+	else if(cur_sel!=0xFFFF)
+	{
+		cur_chgR=cur_sel;
+	}
+}
+
+void CMapDeluxeDlg::OnLButtonUp(UINT nFlags, CPoint point){
+	MouseLState=false;
+}
 void CMapDeluxeDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	MouseLState=true;
@@ -1510,6 +1591,57 @@ void CMapDeluxeDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	UpdateGridInfo();
 	UpdateLibInfo();
 	CDialog::OnLButtonDown(nFlags, point);
+}
+void CMapDeluxeDlg::OnRButtonUp(UINT nFlags, CPoint point){
+	MouseRState=false;
+}
+void CMapDeluxeDlg::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	MouseRState=true;
+	if(cur_step==0xFFFF)return;
+	DrawGridR();
+	CDC* pDC=GetDC();
+	//PaintMap();
+	PaintMapTile(cur_x,cur_y);
+	PaintGraLib();
+	PresentMap(pDC);
+	PresentGraLib(pDC);
+	ReleaseDC(pDC);
+	UpdateGridInfo();
+	UpdateLibInfo();
+	CDialog::OnRButtonDown(nFlags, point);
+}
+void CMapDeluxeDlg::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	int nest=m_CheckNest.GetCheck()?1:0;
+	if(cur_x!=0xFFFF)
+	{
+		CString str;
+		m_ComboMapChg.GetWindowText(str);
+		if(*(u32*)&map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width]==0xFFFFFFFF)
+		{
+			*(u32*)&map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width]=0;
+		}
+		switch(m_ComboMapChg.FindString(-1,str.GetBuffer()))
+		{
+		case 0:
+			cur_chg=map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width].gra;
+			break;
+		case 1:
+			cur_chg=map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width].det;
+			break;
+		}
+
+	}
+	CDC* pDC=GetDC();
+	PaintGraLib();
+	//PresentMap(pDC);
+	PresentGraLib(pDC);
+	ReleaseDC(pDC);
+	//UpdateGridInfo();
+	//UpdateLibInfo();
+	m_ScrollBarGraLib.SetScrollPos((cur_chg/16)*16,TRUE);
+	
 }
 
 void CMapDeluxeDlg::OnBnClickedButtonSaveTest()
@@ -1633,7 +1765,7 @@ void CMapDeluxeDlg::OnBnClickedCheckNest()
 	ReleaseDC(pDC);
 }
 
-void CMapDeluxeDlg::OnRButtonDown(UINT nFlags, CPoint point)
+/*void CMapDeluxeDlg::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	if(cur_step==0xFFFF)return;
 
@@ -1645,7 +1777,7 @@ void CMapDeluxeDlg::OnRButtonDown(UINT nFlags, CPoint point)
 	ReleaseDC(pDC);
 
 	CDialog::OnRButtonDown(nFlags, point);
-}
+}*/
 
 void CMapDeluxeDlg::OnBnClickedButtonSaveFinal()
 {
@@ -1916,5 +2048,4 @@ void CMapDeluxeDlg::PaintMapTile(int x, int y)
 		
 	}
 }
-
 

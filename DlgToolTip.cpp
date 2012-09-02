@@ -138,8 +138,8 @@ void CMapDeluxeDlg::InitToolTipText()
 		_T("对于其他判定，掀开数据将会自动填充为空。")
 		);
 	m_ToolTip.AddTool(&m_AllowKeyControl,
-		_T("如果你希望允许通过键盘控制下方的选择框，请选择这个选项。")
-		_T("请用键盘上的WASD键控制。")
+		_T("如果你希望允许使用快捷键，请选择这个选项。")
+		_T("快捷键请参见读我文档")
 		_T("不要忘了把输入法调整到英文状态")
 		);
 }

@@ -174,6 +174,7 @@ public:
 	u16 cur_x,cur_y;
 	u16 cur_sel;
 	u16 cur_chg;
+	u16 cur_chgR;
 	
 	BLENDFUNCTION BFunction;
 	u8 AlphaValue;
@@ -183,13 +184,17 @@ public:
 	void UpdateGridInfo();
 	void UpdateLibInfo();
 	void DrawGrid();
+	void DrawGridR();
 
 	void PaintGraLib();
 	void PresentGraLib(CDC* pDC);
-	bool MouseLState;
+	bool MouseLState,MouseRState;
 	CStatic m_StaticLibInfo;
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	CButton m_ButtonNew;
 	CButton m_ButtonOpen;
 	CButton m_ButtonSave;
@@ -198,7 +203,6 @@ public:
 	afx_msg void OnBnClickedButtonSaveas();
 	CButton m_CheckNest;
 	afx_msg void OnBnClickedCheckNest();
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	CProgressCtrl m_Progress;
 	afx_msg void OnBnClickedButtonSaveFinal();
 	afx_msg void OnBnClickedButtonResize();
