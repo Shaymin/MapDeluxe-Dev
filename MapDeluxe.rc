@@ -205,8 +205,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,2,0,1
- PRODUCTVERSION 2,2,0,1
+ FILEVERSION 2,2,1,1
+ PRODUCTVERSION 2,2,1,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -222,11 +222,11 @@ BEGIN
         BLOCK "080403a8"
         BEGIN
             VALUE "CompanyName", "wwylele"
-            VALUE "FileVersion", "2.2.0.1"
+            VALUE "FileVersion", "2.2.1.1"
             VALUE "InternalName", "MapDeluxe.exe"
             VALUE "OriginalFilename", "MapDeluxe.exe"
             VALUE "ProductName", "MapDeluxe-Dev"
-            VALUE "ProductVersion", "2.2.0.1"
+            VALUE "ProductVersion", "2.2.1.1"
         END
     END
     BLOCK "VarFileInfo"

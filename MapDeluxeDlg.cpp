@@ -358,7 +358,7 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 			ReleaseDC(pDC);
 			//UpdateGridInfo();
 			//UpdateLibInfo();
-			m_ScrollBarGraLib.SetScrollPos((cur_chg/16)*16,TRUE);
+			m_ScrollBarGraLib.SetScrollPos(max((cur_chg/16 - 5)*16,0),TRUE);
 		}
 		if(pMsg->wParam=='A')
 		{
@@ -385,7 +385,7 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 			ReleaseDC(pDC);
 			//UpdateGridInfo();
 			//UpdateLibInfo();
-			m_ScrollBarGraLib.SetScrollPos((cur_chg/16)*16,TRUE);
+			m_ScrollBarGraLib.SetScrollPos(max((cur_chg/16 - 5)*16,0),TRUE);
 		}
 		if(pMsg->wParam=='D')
 		{
@@ -412,7 +412,7 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 			ReleaseDC(pDC);
 			//UpdateGridInfo();
 			//UpdateLibInfo();
-			m_ScrollBarGraLib.SetScrollPos((cur_chg/16)*16,TRUE);
+			m_ScrollBarGraLib.SetScrollPos(max((cur_chg/16 - 5)*16,0),TRUE);
 		}
 		if(pMsg->wParam=='S')
 		{
@@ -439,7 +439,7 @@ BOOL CMapDeluxeDlg::PreTranslateMessage(MSG* pMsg)
 			ReleaseDC(pDC);
 			//UpdateGridInfo();
 			//UpdateLibInfo();
-			m_ScrollBarGraLib.SetScrollPos((cur_chg/16)*16,TRUE);
+			m_ScrollBarGraLib.SetScrollPos(max((cur_chg/16 - 5)*16,0),TRUE);
 		}
 		if (pMsg->wParam=='Z'){
 			CString str;
@@ -1542,7 +1542,10 @@ void CMapDeluxeDlg::DrawGrid()
 void CMapDeluxeDlg::DrawGridR()
 {
 	int nest=m_CheckNest.GetCheck()?1:0;
-
+	if (m_CheckNest.GetCheck()){
+		*(u32*)&map[1][cur_step][cur_x+cur_y*step_header[cur_step].width]=0xFFFFFFFF;
+	}
+	else 
 	if(cur_x!=0xFFFF)
 	{
 		CString str;
