@@ -2076,6 +2076,68 @@ void CMapDeluxeDlg::OnBnClickedClearMap()
 	}
 
 }
+void CMapDeluxeDlg::OnDropFiles(HDROP hDropInfo)
+{
+	TCHAR fname[256]={0};
+	DragQueryFile(hDropInfo,0,fname,255);
+	DragFinish(hDropInfo);
+
+	CString strFileName=fname;
+	CFile file;
+	char *MagicStr="ROM_REBUILD_V1";
+	char MagicTmp[16];
+	if(!file.Open(strFileName.GetBuffer(),CFile::modeReadWrite))
+	{
+		MessageBox(_T("未能打开文件！此文件可能正在被其它程序使用！"),_T("错误"),MB_ICONERROR);
+		return;
+	}
+
+#ifdef CHECK_ROM_MAGIC
+	file.Seek(0x7FFFF0,CFile::begin);
+	file.Read(MagicTmp,16);
+	if(strcmp(MagicTmp,MagicStr)!=0)
+	{
+		MessageBox(_T("所选文件非可解析的梦之泉ROM。\n请选择本程序创建的ROM！"),_T("错误"),MB_ICONERROR);
+		file.Close();
+		return;
+	}
+#endif
+
+	ReadRom(file);
+
+	m_EditFileName.SetWindowText(strFileName.GetBuffer());
+
+	CDialog::OnDropFiles(hDropInfo);
+}
+
+void CMapDeluxeDlg::OnBnClickedCheckEdg()
+{
+	m_EditEdg.EnableWindow(m_CheckEdg.GetCheck());
+}
+
+void CMapDeluxeDlg::OnBnClickedButtonRomImage()
+{
+	if(map[0][0]==0)return;
+	CDlgRomImage dlg;
+	memcpy(dlg.rom_image,rom_image,sizeof(u16)*240*160);
+	if(dlg.DoModal()==IDOK)memcpy(rom_image,dlg.rom_image,sizeof(u16)*240*160);
+}
+
+void CMapDeluxeDlg::OnBnClickedButtonGameTest()
+{
+	if(map[0][0]==0)return;
+	OnBnClickedButtonSave();
+	
+	CString str;
+	m_EditFileName.GetWindowText(str);
+	str=_T("VisualBoyAdvance.exe \"")+str+_T("\"");
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	ZeroMemory(&pi,sizeof(pi));
+	ZeroMemory(&si,sizeof(si));
+	si.cb=sizeof(si);
+	CreateProcess(0,str.GetBuffer(),0,0,0,0,0,0,&si,&pi);
+}
 
 void CMapDeluxeDlg::PaintMapTile(int x, int y)
 {
