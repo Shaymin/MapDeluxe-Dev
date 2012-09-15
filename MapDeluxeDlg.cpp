@@ -255,9 +255,41 @@ BOOL CMapDeluxeDlg::OnInitDialog()
 
 	m_CheckNestAuto.SetCheck(TRUE);
 	m_AllowKeyControl.SetCheck(TRUE);
+
+	m_EditEdg.SetWindowText(_T("0"));
+	m_EditEdg.EnableWindow(FALSE);
+	m_CheckEdg.EnableWindow(FALSE);
 	
 	
 	
+	CString strFileName=AfxGetApp()->m_lpCmdLine;
+	strFileName.Replace(_T("\""),_T(""));
+	CFile file;
+	char *MagicStr="ROM_REBUILD_V1";
+	char MagicTmp[16];
+	if(!file.Open(strFileName.GetBuffer(),CFile::modeReadWrite))
+	{
+		//MessageBox(_T("未能打开文件！此文件可能正在被其它程序使用！"),_T("错误"),MB_ICONERROR);
+		return TRUE;
+	}
+
+
+#ifdef CHECK_ROM_MAGIC
+	file.Seek(0x7FFFF0,CFile::begin);
+	file.Read(MagicTmp,16);
+	if(strcmp(MagicTmp,MagicStr)!=0)
+	{
+		//MessageBox(_T("所选文件非可解析的梦之泉ROM。\n请选择本程序创建的ROM！"),_T("错误"),MB_ICONERROR);
+		file.Close();
+		return TRUE;
+	}
+#endif
+
+	ReadRom(file);
+
+	m_EditFileName.SetWindowText(strFileName.GetBuffer());
+
+
 	printf("MapDeluxe-dev Initialized.\n");
 	return TRUE;  
 }
@@ -606,13 +638,8 @@ u32 CMapDeluxeDlg::StrToI(CString &str)
 	return s;
 	
 }
-COLORREF R5G5B5X1toR8G8B8X8(u16 value)
-{
-	return RGB(
-		(value&0x1F)*256/32,
-		((value&0x3E0)>>5)*256/32,
-		(value>>10)*256/32);
-}
+
+
 void CMapDeluxeDlg::LoadGraLib()
 {
 	if(cur_step==0xFFFF)return;
@@ -959,6 +986,10 @@ void CMapDeluxeDlg::ReadRom(CFile& file)
 
 	}
 
+	//起始页
+	file.Seek(ROM_IMAGE_OFFSET,CFile::begin);
+	file.Read(rom_image,sizeof(u16)*160*240);
+	
 	
 }
 
@@ -977,12 +1008,10 @@ void CMapDeluxeDlg::OnBnClickedButtonNew()
 		return;
 	}
 	LockRomResource();
-
 	file.Write(pRomRebuild,0x01000000);
 	file.Close();
 	UnlockRomResource();
 	
-
 	file.Open(strFileName.GetBuffer(),CFile::modeReadWrite);
 	ReadRom(file);
 
@@ -993,6 +1022,7 @@ void CMapDeluxeDlg::OnBnClickedButtonNew()
 
 void CMapDeluxeDlg::OnBnClickedButtonSave()
 {
+	if(map[0][0]==0)return;
 	CString strFileName;
 	m_EditFileName.GetWindowText(strFileName);
 	CFile file;
@@ -1001,6 +1031,9 @@ void CMapDeluxeDlg::OnBnClickedButtonSave()
 		MessageBox(_T("未能写入文件！此文件可能正在被其它程序使用！"),_T("错误"),MB_ICONERROR);
 		return;
 	}
+	LockRomResource();
+	file.Write(pRomRebuild,0x01000000);//
+	UnlockRomResource();
 	WriteRom(file);
 	file.Close();
 }
@@ -1145,6 +1178,11 @@ void CMapDeluxeDlg::WriteRom(CFile& file)
 		m_Progress.SetPos(index+1);
 		UpdateData(FALSE);
 	}
+	
+	//起始页
+	file.Seek(ROM_IMAGE_OFFSET,CFile::begin);
+	file.Write(rom_image,sizeof(u16)*160*240);
+
 	MessageBox(_T("写入文件成功！"),_T("成功"));
 	m_Progress.SetPos(0);
 }
@@ -1411,6 +1449,13 @@ void CMapDeluxeDlg::UpdateLibInfo()
 void CMapDeluxeDlg::OnCbnSelchangeComboMapchg()
 {
 	if(cur_step==0xFFFF)return;
+	
+	CString str;
+	m_ComboMapChg.GetWindowText(str);
+	bool EdgOpen=(m_ComboMapChg.FindString(-1,str.GetBuffer())==1);
+	m_CheckEdg.EnableWindow(EdgOpen);
+	m_EditEdg.EnableWindow(EdgOpen && m_CheckEdg.GetCheck());
+	
 	ResetGraLibScrollBar();
 	cur_chg=0;
 	cur_chgR=0;
@@ -1519,7 +1564,7 @@ void CMapDeluxeDlg::PresentGraLib(CDC* pDC)
 void CMapDeluxeDlg::DrawGrid()
 {
 	int nest=m_CheckNest.GetCheck()?1:0;
-
+	if(cur_step==0xFFFF)return;
 	if(cur_x!=0xFFFF)
 	{
 		CString str;
@@ -1535,6 +1580,11 @@ void CMapDeluxeDlg::DrawGrid()
 			break;
 		case 1:
 			map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width].det=(u8)cur_chg;
+			if(m_CheckEdg.GetCheck())
+			{
+				m_EditEdg.GetWindowText(str);
+				map[nest][cur_step][cur_x+cur_y*step_header[cur_step].width].edg=(u8)StrToI(str);
+			}
 			if(nest==0 && m_CheckNestAuto.GetCheck())
 			{
 				*(u32*)&map[1][cur_step][cur_x+cur_y*step_header[cur_step].width]=
@@ -1751,6 +1801,7 @@ void CMapDeluxeDlg::OnBnClickedButtonSaveTest()
 
 void CMapDeluxeDlg::OnBnClickedButtonSaveas()
 {
+	if(map[0][0]==0)return;
 	//打开文件
 	CFileDialog filedlg(FALSE,_T("gba"),_T("我的梦之泉.gba"),OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT,
 		_T("梦之泉ROM|*.gba||"),this);
@@ -1795,6 +1846,7 @@ void CMapDeluxeDlg::OnBnClickedCheckNest()
 
 void CMapDeluxeDlg::OnBnClickedButtonSaveFinal()
 {
+	if(map[0][0]==0)return;
 	char MagicErase[]="FINAL_PLAY_ONLY";
 	//打开文件
 	CFileDialog filedlg(FALSE,_T("gba"),_T("我的梦之泉.gba"),OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT,
@@ -1869,6 +1921,27 @@ void CMapDeluxeDlg::OnBnClickedButtonDoor()
 	CDlgDoor dlg;
 	dlg.pcount=&tcount;
 	dlg.ppdata=&tdata;
+	//添加坐标预设菜单
+	CString str;
+	u8 det0,det1;
+	int menuidx=0;
+	for(u16 y=0;y<step_header[cur_step].height;y++)for(u16 x=0;x<step_header[cur_step].width;x++)
+	{
+		det0=map[0][cur_step][x+y*step_header[cur_step].width].det;
+		det1=map[1][cur_step][x+y*step_header[cur_step].width].det;
+		if(det0==0x10||det0==0x36||det0==0x37||det0==0x90||det0==0xB6||det0==0xB7)
+		{
+			str.Format(_T("(%d,%d)%s"),x,y,CodeTran_Det(det0));
+			dlg.m_MenuXY.AppendMenu(MF_STRING,DOOR_XY_MENU_ID_BASE+menuidx,str.GetBuffer());
+			menuidx++;
+		}
+		else if(det1==0x10||det1==0x36||det1==0x37||det1==0x90||det1==0xB6||det1==0xB7)
+		{
+			str.Format(_T("(%d,%d)(掀开)%s"),x,y,CodeTran_Det(det1));
+			dlg.m_MenuXY.AppendMenu(MF_STRING,DOOR_XY_MENU_ID_BASE+menuidx,str.GetBuffer());
+			menuidx++;
+		}
+	}
 	if(dlg.DoModal()==IDOK)
 	{
 		if(step_header[cur_step].door_count)
@@ -2022,7 +2095,6 @@ void CMapDeluxeDlg::PaintMapTile(int x, int y)
 			m_TmpDC2.SelectObject(&m_BmpGra);
 			v=map[nest][cur_step][x+y*step_header[cur_step].width].gra;
 			m_TmpDC.BitBlt(x*16,y*16,16,16,&m_TmpDC2,(v&0xF)*16,(v>>4)*16,SRCCOPY);
-			m_ComboMapChg.GetWindowText(str);
 			
 		}
 		else
@@ -2031,6 +2103,7 @@ void CMapDeluxeDlg::PaintMapTile(int x, int y)
 			m_TmpDC.BitBlt(x*16,y*16,16,16,&m_TmpDC2,0,0,SRCAND);
 		}
 	}
+	m_ComboMapChg.GetWindowText(str);
 	for(int nest=0;nest<nestm;nest++)
 	{
 		if(*(u32*)&map[nest][cur_step][x+y*step_header[cur_step].width]!=0xFFFFFFFF)
