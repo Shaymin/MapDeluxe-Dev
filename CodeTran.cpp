@@ -3,6 +3,20 @@
 
 #include "stdafx.h"
 #include "CodeTran.h"
+
+COLORREF R5G5B5X1toR8G8B8X8(u16 value)
+{
+	return RGB(
+		(value&0x1F)*256/32,
+		((value&0x3E0)>>5)*256/32,
+		(value>>10)*256/32);
+}
+u16 R8G8B8X8toR5G5B5X1(COLORREF value)
+{
+	return (GetRValue(value)*32/256)|
+		((GetGValue(value)*32/256)<<5)|
+		((GetBValue(value)*32/256)<<10);
+}
 TCHAR* CodeTran_Bgm(u8 code)
 {
 	switch(code)

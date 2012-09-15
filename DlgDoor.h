@@ -28,4 +28,5 @@ public:
 	void UpdateList();
 	afx_msg void OnBnClickedDoorDelete();
 	afx_msg void OnBnClickedDoorAdd();
+	CMenu m_MenuXY;
 };

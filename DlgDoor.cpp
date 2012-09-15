@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CDlgDoor, CDialog)
 CDlgDoor::CDlgDoor(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgDoor::IDD, pParent)
 {
-
+	m_MenuXY.CreatePopupMenu();//构造时立即创建以使窗口调用者能够往里面灌入选项
 }
 
 CDlgDoor::~CDlgDoor()
@@ -135,6 +135,7 @@ void CDlgDoor::OnBnClickedDoorAdd()
 		return;
 	}
 	CDlgDoorAdd dlg;
+	dlg.pdxymenu=&m_MenuXY;
 	if(dlg.DoModal()==IDCANCEL)return;
 	(*pcount)++;
 	DOOR_DATA *newdata=new DOOR_DATA[*pcount];

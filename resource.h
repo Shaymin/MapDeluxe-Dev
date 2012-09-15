@@ -98,6 +98,14 @@
 #define IDC_EDIT_DOOR_P2                1085
 #define IDC_EDIT_DOOR_P3                1086
 #define IDC_EDIT_DOOR_P4                1087
+#define IDC_BUTTON_DOOR_XY              1088
+#define IDC_STATIC_MAPEDIT              1089
+#define IDC_CHECK_EDG                   1090
+#define IDC_EDIT_EDG                    1091
+#define IDC_BUTTON_ROM_IMAGE            1092
+#define IDC_BUTTON_IMP_ROM_IMAGE        1093
+#define IDC_BUTTON1                     1094
+#define IDC_BUTTON_GAME_TEST            1094
 
 // Next default values for new objects
 // 

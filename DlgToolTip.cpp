@@ -142,4 +142,21 @@ void CMapDeluxeDlg::InitToolTipText()
 		_T("快捷键请参见读我文档")
 		_T("不要忘了把输入法调整到英文状态")
 		);
+	str=_T("【未知量Edg的修改】\r\n")
+		_T("Edg是地图中每一个格子（包括掀开数据）都拥有的一个作用未知的参数。\r\n")
+		_T("勾选“将未知量‘Edg’修改为下面的数值”，然后在下面的文本框中输入一个小于256的自然数，")
+		_T("然后在判定模式下修改地图格子即可同时为此格子修改Edg数值为所指定的值。\r\n")
+		_T("拥有Edg≠0的格子将会在判定模式下用彩色的点标识。");
+	m_ToolTip.AddTool(&m_CheckEdg,str);
+	m_ToolTip.AddTool(&m_EditEdg,str);
+	m_ToolTip.AddTool(&m_ButtonGameTest,
+		_T("点击这里可快速启动游戏。\r\n")
+		_T("点击这里后本软件将启动同目录下的VisualBoyAdvance.exe程序来运行梦之泉。")
+		_T("运行前将自动保存游戏。\r\n")
+		);
+	m_ToolTip.AddTool(&m_ButtonRomImage,
+		_T("本软件允许为游戏添加一个自定义的起始画面，")
+		_T("此起始画面将在游戏运行开始时显示，按任意键后进入游戏。")
+		_T("如不编辑将使用默认画面。\r\n")
+		);
 }

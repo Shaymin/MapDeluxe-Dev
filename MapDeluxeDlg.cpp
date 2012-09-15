@@ -22,12 +22,16 @@
 #include "DlgResize.h"
 #include "DlgDoor.h"
 #include "DebugConsole.h"
+#include "DlgRomImage.h"
 
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+#define CHECK_ROM_MAGIC
+
+#define ROM_IMAGE_OFFSET 0x00CC0000
 
 // CMapDeluxeDlg ¶Ô»°¿ò
 COLORREF BitColor[8]=
@@ -94,6 +98,10 @@ void CMapDeluxeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_RESIZE, m_ButtonResize);
 	DDX_Control(pDX, IDC_BUTTON_SAVE_FINAL, m_ButtonSaveFinal);
 	DDX_Control(pDX, IDC_CHECK_NEST_AUTO, m_CheckNestAuto);
+	DDX_Control(pDX, IDC_CHECK_EDG, m_CheckEdg);
+	DDX_Control(pDX, IDC_EDIT_EDG, m_EditEdg);
+	DDX_Control(pDX, IDC_BUTTON_ROM_IMAGE, m_ButtonRomImage);
+	DDX_Control(pDX, IDC_BUTTON_GAME_TEST, m_ButtonGameTest);
 }
 
 BEGIN_MESSAGE_MAP(CMapDeluxeDlg, CDialog)
@@ -142,7 +150,10 @@ BEGIN_MESSAGE_MAP(CMapDeluxeDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT_GRAMAP_BCK, &CMapDeluxeDlg::OnEnChangeEditGramapBck)
 	ON_EN_CHANGE(IDC_EDIT_GRA_ANI, &CMapDeluxeDlg::OnEnChangeEditGraAni)
 	ON_BN_CLICKED(IDC_CLEAR_MAP, &CMapDeluxeDlg::OnBnClickedClearMap)
-	
+	ON_WM_DROPFILES()
+	ON_BN_CLICKED(IDC_CHECK_EDG, &CMapDeluxeDlg::OnBnClickedCheckEdg)
+	ON_BN_CLICKED(IDC_BUTTON_ROM_IMAGE, &CMapDeluxeDlg::OnBnClickedButtonRomImage)
+	ON_BN_CLICKED(IDC_BUTTON_GAME_TEST, &CMapDeluxeDlg::OnBnClickedButtonGameTest)
 END_MESSAGE_MAP()
 
 

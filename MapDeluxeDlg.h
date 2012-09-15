@@ -5,6 +5,7 @@
 #include "afxwin.h"
 #include "MapDataType.h"
 #include "afxcmn.h"
+#include "afxole.h"
 
 #define STEP_INDEXING_COUNT 292
 
@@ -66,6 +67,9 @@ public:
 	DOOR_DATA* door[STEP_INDEXING_COUNT];
 	OBJ_DATA* obj[STEP_INDEXING_COUNT];//还没用呢
 
+	u16 rom_image[240*160];
+	
+	
 
 // 实现
 protected:
@@ -221,4 +225,12 @@ public:
 	afx_msg void OnBnClickedClearMap();
 	void PaintMapTile(int x, int y);
 	BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnDropFiles(HDROP hDropInfo);
+	CButton m_CheckEdg;
+	CEdit m_EditEdg;
+	afx_msg void OnBnClickedCheckEdg();
+	afx_msg void OnBnClickedButtonRomImage();
+	afx_msg void OnBnClickedButtonGameTest();
+	CButton m_ButtonRomImage;
+	CButton m_ButtonGameTest;
 };

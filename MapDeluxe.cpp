@@ -45,6 +45,7 @@ BOOL CMapDeluxeApp::InitInstance()
 
 	AfxEnableControlContainer();
 
+	AfxOleInit();
 
 	CMapDeluxeDlg* dlg=new CMapDeluxeDlg;
 	m_pMainWnd = dlg;

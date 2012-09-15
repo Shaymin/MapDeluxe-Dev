@@ -35,6 +35,7 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 
+#include <atlimage.h>
 
 typedef unsigned char u8;
 typedef unsigned short u16;

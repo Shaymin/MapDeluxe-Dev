@@ -31,12 +31,16 @@ public:
 	CEdit m_EditDoorP2;
 	CEdit m_EditDoorP3;
 	CEdit m_EditDoorP4;
+	CMenu* pdxymenu;
 	virtual BOOL OnInitDialog();
 	void UpdateClass();
 	afx_msg void OnCbnSelchangeCombo1();
 	afx_msg void OnCbnSelchangeComboDoorclass();
-
+	afx_msg void OnXYMenu(UINT id);
 	DOOR_DATA newdoor;
 protected:
 	virtual void OnOK();
+public:
+	afx_msg void OnBnClickedButtonDoorXy();
+	CButton m_ButtonXY;
 };
