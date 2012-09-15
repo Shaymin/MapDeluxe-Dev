@@ -10,6 +10,7 @@
 #define IDD_RESIZE                      133
 #define IDD_DOOR                        134
 #define IDD_DOOR_ADD                    135
+#define IDD_ROM_IMAGE                   136
 #define IDC_TREE_FILE                   1000
 #define IDC_BUTTON_OPEN                 1001
 #define IDC_BUTTON_SAVE                 1002
@@ -104,14 +105,13 @@
 #define IDC_EDIT_EDG                    1091
 #define IDC_BUTTON_ROM_IMAGE            1092
 #define IDC_BUTTON_IMP_ROM_IMAGE        1093
-#define IDC_BUTTON1                     1094
 #define IDC_BUTTON_GAME_TEST            1094
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        136
+#define _APS_NEXT_RESOURCE_VALUE        137
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1085
 #define _APS_NEXT_SYMED_VALUE           101

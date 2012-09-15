@@ -8,8 +8,8 @@
 
 #include "resource.h"		// Ö÷·ûºÅ
 
-
-
+#define STEP_INDEXING_COUNT 292
+#define DOOR_XY_MENU_ID_BASE 3001
 
 
 class CMapDeluxeApp : public CWinApp
