@@ -1,0 +1,389 @@
+<html>
+	
+<head>
+<title>About NINJA 2.0</title>
+</head>
+
+<body>
+
+<h1>About NINJA 2.0</h1>
+
+<ul>
+
+<li><a href="#install">Install</a></li>
+
+<li><a href="#features">Format Features</a></li>
+
+<li><a href="#command">Command-Line Useage</a></li>
+
+<li><a href="#format">File Format</a></li>
+
+</ul>
+
+<h2><a name="install">Install</a></h2>
+
+<p>Extract this archive to any folder you would like to install it to and run ninja.exe. You will be prompted to create file associations. NINJA can associate itself with RUP, IPS, PPF, FFP, PAT and GDIFF patch files.</p>
+
+<p>If you change your mind about associating files with NINJA, click About->Associate and uncheck the option to allow NINJA to manage your file associations. This will not restore your former associations, but it will prevent NINJA from taking over those associations at each load.</p>
+
+<p>To create patches, run creator.exe.</p>
+
+<h2><a name="features">Format Features</a></h2>
+
+<ul>
+	
+<li>Capable of creating and applying patches between both directories and single files</li>
+
+<li>XOR patches allows a NINJA patch to both patch a file and restore its original form</li>
+
+<li>Support for International Patching Standard (IPS) with the LunarCut format extension.</li>
+
+<li>Support for PlayStation Patch Format (PPF) 1.0, 2.0 and 3.0</li>
+
+<li>Support for Generic Diff Format (GDIFF) binary patches</li>
+
+<li>Support for FireFlower Patcher (FFP/PAT) textual patches. Can use as both a patcher an unpatcher</li>
+
+<li>Support for Microsoft File Compare output; can use as both a patcher and unpatcher (Example: fc /b FILE1 FILE2 >output.pat)</li>
+
+<li>Double-click file application with associations for RUP, IPS, PPF, PAT, FFP and GDIFF</li>
+
+<li>File icons to match default Windows XP, Windows Vista or CrystalXP "Crystal Clear" BricoPack</li>
+
+<li>PHP command line back-end that can be used on any PHP-capable OS (RISC OS, Mac OSX, Linux, FreeBSD, QNX RTP, SGI IRIX, OS/2 and Novell NetWare); back-end supports all NINJA features except the GUI</li>
+
+<li>Format supports addressing in files up to 32,317,006*10<sup>600</sup> bytes; sadly, this implementation only supports up to 9,223,372,036,854,775,807.</li>
+
+<li>NINJA patches support a struct of internal patch info so you can store the author, version number, game title, game genre, patch language, release date, patch homepage and a 1074 character summary</li>
+
+<li>Drag-and-drop in file names to fields for quicker patch creation</li>
+
+<li>Nintendo 8-bit: Supports patching around NES headers; support for all NES formats except Pasofami (interNES, Famtasia and UNIF); one patch will work on NES, FAM and UNF ROMs</li>
+
+<li>Super Nintendo: Supports patching around SNES headers; deinterleaving of Game Doctor SF3, Professor SF2, Super UFO and Multi Game Doctor formats; can preserve NSRT headers; one patch will work on SMC, SWC, FIG, 048, 058, 078, SFC, MGD, UFO, GD3 and GD7 ROMs</li>
+
+<li>Nintendo 64: Supports deinterleaving of Doctor V64 ROMS; one patch will work on both Z64 and V64 ROMs</li>
+
+<li>Game Boy: Supports removal of SmartCart Game Boy headers</li>
+
+<li>Sega Master System: Supports deinterleaving of Super Magic Drive ROMs; one patch will work on both SMS and SMD ROMs</li>
+
+<li>Sega Genesis: Supports deinterleaving of Super Magic Drive ROMs; one patch will work on both BIN and SMD ROMs</li>
+
+<li>PC-Engine: Supports removal of Magic Super Griffin headers</li>
+
+<li>Atari Lynx: Supports patching around Atari Lynx headers; one patch will work on LNX/RAW and LYX ROMs</li>
+
+</ul>
+
+<h2><a name="features">Requirements</a></h2>
+
+<ul>
+
+<li>For the GUI: a Windows operating system with support for Microsoft .NET Framework 2.0 Redistributable Package (available from Windows Update or <a href="http://msdn.microsoft.com/netframework/">http://msdn.microsoft.com/netframework/</a>)</li>
+
+<li>For the command prompt: access to a command line and PHP installed</li>
+
+</ul>
+
+<h2><a name="command">Command-Line Useage</a></h2>
+
+<p>NINJA does two things: makes patches and applies them. This version can apply NINJA 2.0, PPF, IPS, FFP, PAT and GDIFF patches. In the case of PPF, PAT, FFP and NINJA, the internal patch info will be displayed in the console for you to read.</p>
+
+<p>The command lines are:</p>
+
+<blockquote>
+<pre>Create - ninja2.bat SOURCE MODIFIED FILE TYPE INFO
+                       |       |     |    |    |
+                       |       |     |    |    +- Text info file
+                       |       |     |    +------ Format of data
+                       |       |     +----------- File to create
+                       |       +----------------- Modified file/folder
+                       +------------------------- Original file/folder
+Apply  - ninja2.bat PATCH TARGET
+                      |     |
+                      |     +-------------------- File/Folder to patch
+		      +-------------------------- Patch file</pre>
+</blockquote>
+	
+<p>The text info file must be a plain text file of 8 lines. The data expected on each line is:</p>
+
+<blockquote>
+<pre>1: Author      (  84 characters max)
+2: Version     (  11 characters max)
+3: Title       ( 256 characters max)
+4: Genre       (  48 characters max)
+5: Language    (  48 characters max)
+6: Date        (   8 characters max) (YYYYMMDD)
+7: Website     ( 512 characters max)
+8: Description (1074 characters max)</pre>
+</blockquote>
+
+<p>Data exceeding the limit for each line will be ignored. If no file is specified, blank bytes will be entered for the file info.</p>
+
+<p>Allowed data types are as follows:</p>
+
+<blockquote>
+<pre>raw - Raw Binary (0)               gb  - Nintendo Game Boy (5)
+nes - Nintendo/Famicom (1)         sms - Sega Master System/Game Gear (6)
+fds - Famicom Disk System (2)      mega- Sega Genesis/Megadrive (7)
+snes- Super Nintendo/Famicom (3)   pce - NEC TurboGrafx-16/PC-Engine (8)
+n64 - Nintendo 64 (4)              lynx- Atari Lynx (9)</pre>
+</blockquote>
+
+<p>If no data type is specified, raw is assumed.</p>
+
+<p>If your original data is a folder, the modified data must be a folder with the same structure. To decrease patch creation time, it is recommended you include only modified files in the modified folder, otherwise NINJA will be forced to scan every single file.</p>
+
+<p>NINJA will fail if you attempt to create a patch between a file and a folder.</p>
+
+<h2><a name="format">File Format</a></h2>
+
+<p>NINJA 2.0 follows a much simpler file format than its predecessor. Each patch consists of 3 regions: HEADER, INFO and DATA. HEADER and INFO make up the first sector of the patch (1024 bytes).</p>
+
+<blockquote>
+<pre>@HEADER@
+{
+  NINJA_MAGIC - string "NINJA" (5 bytes)
+  NINJA_VER   - char "2"       (1 byte )
+}
+
+@INFO@
+{
+  PATCH_ENC   - int ENC      (   1 byte ) // Info text encoding
+                                          // 0: System codepage / 1: UTF-8
+  PATCH_AUTH  - string AUTH  (  84 bytes) // Author
+  PATCH_VER   - string VER   (  11 bytes) // Version
+  PATCH_TITLE - string TITLE ( 256 bytes) // Title
+  PATCH_GENRE - string GENRE (  48 bytes) // Genre
+  PATCH_LANG  - string LANG  (  48 bytes) // Language
+  PATCH_DATE  - string DATE  (   8 bytes) // Date as YYYYMMDD
+  PATCH_WEB   - string WEB   ( 512 bytes) // Website
+  PATCH_DESC  - string DESC  (1074 bytes) // Info (New line marked by "\n")
+}
+
+@DATA@
+{
+  COMMAND     - int COMMAND  (  1 byte )
+
+  if COMMAND == 0x1     // Open File|Close Current
+  {
+
+    FILE_N_MUL    - int N_MUL     (        1 byte ) // 0 Signals single-file
+    FILE_N_LEN    - int N_LEN     (    N_MUL bytes) // Length of file name
+    FILE_NAME     - string NAME   (    N_LEN bytes) // File name
+    FILE_TYPE     - int TYPE      (        1 byte ) // File format
+    FILE_SSIZE_MUL- int SSIZE_MUL (        1 byte )
+    FILE_SSIZE    - int SIZE      (SSIZE_MUL bytes) // Source file size
+    FILE_MSIZE_MUL- int MSIZE_MUL (        1 byte )
+    FILE_MSIZE    - int MIZE      (MSIZE_MUL bytes) // Modified file size
+    FILE_SMD5     - string SMD5   (       16 bytes) // Source MD5sum
+    FILE_MMD5     - string MMD5   (       16 bytes) // Modified MD5sum
+
+    if SSIZE > MSIZE
+    {
+      FILE_MAGIC   - char "M"        (       1 byte ) // Source overflow
+      FILE_OVER_MUL- int OVER_MUL    (       1 byte )
+      FILE_OVER    - int OVER        (OVER_MUL bytes) // Overflow length
+      FILE_OVERFLOW- string OVERFLOW (    OVER bytes) // Lost from modified
+    }
+
+    else if MSIZE > SSIZE
+    {
+      FILE_MAGIC   - char "A"        (       1 byte ) // Modified overflow
+      FILE_OVER_MUL- int OVER_MUL    (       1 byte )
+      FILE_OVER    - int OVER        (OVER_MUL bytes) // Overflow length
+      FILE_OVERFLOW- string OVERFLOW (    OVER bytes) // Gained in modified
+    }
+
+  }
+
+  else if COMMAND == 02 // XOR Patch
+  {
+    PATCH_OFF_MUL- int OFF_MUL (      1 byte )
+    PATCH_OFF    - int OFF     (OFF_MUL bytes) // Patch offset
+    PATCH_LEN_MUL- int LEN_MUL (      1 byte )
+    PATCH_LEN    - int LEN     (LEN_MUL bytes) // Patch length
+    PATCH_XOR    - string XOR  (    LEN bytes) // XOR string
+  }
+
+  else if COMMAND == 0x0
+    // Terminate patch
+}</pre>
+</blockquote>
+
+<h3>RAW</h3>
+
+<pre>FILE_TYPE = 0</pre>
+
+<p>No work needed. The file is handled as is.</p>
+
+<h3>Nintendo / Famicom</h3>
+
+<pre>FILE_TYPE = 1</pre>
+
+<p>Nintendo and Famicom ROMs come in three main formats: interNES, Famtasia and UNIF.</p>
+
+<p>To identify an interNES ROM, read the first three bytes and check if they are the string "NES". To identify a Famtasia ROM, seek to $8 and read two bytes. 0xaabb will indicate a Famtasia ROM. To identify UNIF, read the first four bytes and see if it is the string "UNIF".</p>
+
+<p>For comparing file to create a patch, you need to get everything into the same format. interNES is easy, just subtract the first 0x10 bytes. For Famtasia, subtract the first 0x200. However, UNIF is a little more difficult.</p>
+
+<p>The easiest way to handle UNIF is to patch together the PRG and CHR ROMs. The fastest way to do this is to start reading from $40 and read 4 bytes. If these 4 bytes are PRG[0-F] or CHR[0-F] in ASCII, read the next four bytes. The next four bytes are a length indicator for how long the PRG or CHR ROM is. Read that length and write it out to the new file. If the original four bytes did not match PRG/CHR, read the next four and skip that many bytes ahead. Repeat until you hit EOF.</p>
+
+<p>At this point, all ROMs are in the same format and safe to create a patch between.</p>
+
+<p>To apply a patch, you need to again get everything into the same format again, then apply the patch. When doing this though, save the original file header. You will need to stick the header back onto an interNES or Famtasia ROM. UNIF, again, is a bit more complicated.</p>
+
+<p>Parse the UNIF file as before, but now when you hit a PRG[0-F] or CHR[0-F], again read the length. Now take that many bytes off the common-format file you patched and replace the following UNIF file bytes with that, then chop them off the common format file. IF you repeat this through the whole UNIF file, you'll have inserted the patched common data back into it.</p>
+
+<h3>Super Nintendo / Super Famicom</h3>
+
+<pre>FILE_TYPE = 3</pre>
+
+<p>First, read 0x16 bytes from $0, then read 0x8 bytes from $8, lastly read 0x4 bytes from $1e8. If the first test is the string "GAME DOCTOR SF 3", you have a GD3 ROM. If the second is "SUPERUFO", you have a Super UFO ROM. If the last test is "NSRT", the ROM has an NSRT header we should preserve when applying a patch.</p>
+
+<p>Store those values for reference, then modulus the file size by 32 KBYTEs to see if the ROM has a header. If it does, knock off the first 0x200 bytes.</p>
+
+<p>Next, we need to figure out if we have a HiROM or LoROM ROM, and if it's interleaved. LoROM games are never interleaved unless someone broke the ROM by forcing tools to interleave the LoROM file. If they did, we don't care since the ROM is broken anyway. To check what kind of ROM we have, we need 2 bytes from $7fdc (inverse) and 2 bytes from $7fde (checksum). Lastly, take the byte from $7fd5 and modulus its value by 0x10 (romstate).</p>
+
+<p>If inverse + checksum = 0xffff, you've found the ROM's internal info. If they do not, skip the next steps.</p>
+
+<p>If romstate % 2 = 0, you have a LoROM. Nothing further needs to be done. If it does not, you have a HiROM, and we'll now need to deinterleave.</p>
+
+<p>Copiers aside from the Super UFO have a funky interleave scheme if the ROM is 24Mbit or 32Mbit. The way I handle these is to bust the ROM into chunks and plug the chunks into a deinterleave array, then collapse this array as the new ROM. So you would plug chunk #0 where "0" appears as an array value, chunk #1 goes where "0" appears and so on. Here are the arrays for 24Mbit and 32Mbit ROMs.</p>
+
+<blockquote>
+<pre>chart_20Mbit = array(
+    1,   3,   5,   7,   9,  11,  13,  15,  17,  19,  21,  23,  25,  27,  29,
+   31,  33,  35,  37,  39,  41,  43,  45,  47,  49,  51,  53,  55,  57,  59,
+   61,  63,  65,  67,  69,  71,  73,  75,  77,  79,  64,  66,  68,  70,  72,
+   74,  76,  78,  32,  34,  36,  38,  40,  42,  44,  46,  48,  50,  52,  54,
+   56,  58,  60,  62,   0,   2,   4,   6,   8,  10,  12,  14,  16,  18,  20,
+   22,  24,  26,  28,  30
+);
+
+chart_24Mbit = array(
+    1,   3,   5,   7,   9,  11,  13,  15,  17,  19,  21,  23,  25,  27,  29,
+   31,  33,  35,  37,  39,  41,  43,  45,  47,  49,  51,  53,  55,  57,  59,
+   61,  63,  65,  67,  69,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,
+   91,  93,  95,  64,  66,  68,  70,  72,  74,  76,  78,  80,  82,  84,  86,
+   88,  90,  92,  94,   0,   2,   4,   6,   8,  10,  12,  14,  16,  18,  20,
+   22,  24,  26,  28,  30,  32,  34,  36,  38,  40,  42,  44,  46,  48,  50,
+   52,  54,  56,  58,  60,  62
+);</pre>
+</blockquote>
+
+<p>Lastly, some tools will try to interleave an ExHiROM (ROMs greater than 32Mbit) game. If this happens with a GD3 ROM, the deinterleave matrix will be:</p>
+
+<blockquote>
+<pre>chart_48Mbit = array(
+  129, 131, 133, 135, 137, 139, 141, 143, 145, 147, 149, 151, 153, 155, 157,
+  159, 161, 163, 165, 167, 169, 171, 173, 175, 177, 179, 181, 183, 185, 187,
+  189, 191, 128, 130, 132, 134, 136, 138, 140, 142, 144, 146, 148, 150, 152,
+  154, 156, 158, 160, 162, 164, 166, 168, 170, 172, 174, 176, 178, 180, 182,
+  184, 186, 188, 190,   1,   3,   5,   7,   9,  11,  13,  15,  17,  19,  21,
+   23,  25,  27,  29,  31,  33,  35,  37,  39,  41,  43,  45,  47,  49,  51,
+   53,  55,  57,  59,  61,  63,  65,  67,  69,  71,  73,  75,  77,  79,  81,
+   83,  85,  87,  89,  91,  93,  95,  97,  99, 101, 103, 105, 107, 109, 111,
+  113, 115, 117, 119, 121, 123, 125, 127,   0,   2,   4,   6,   8,  10,  12,
+   14,  16,  18,  20,  22,  24,  26,  28,  30,  32,  34,  36,  38,  40,  42,
+   44,  46,  48,  50,  52,  54,  56,  58,  60,  62,  64,  66,  68,  70,  72,
+   74,  76,  78,  80,  82,  84,  86,  88,  90,  92,  94,  96,  98, 100, 102,
+  104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126
+);</pre>
+</blockquote>
+
+<p>If the ROM is not a GD3 interleave or is not a 20Mbit, 24Mbit or 48Mbit game, the interleave scheme for HiROM games is to break the ROM into even and odd 32 KBYTE blocks. So if a game had only 8 32 KBYTE blocks like 01234567, the interleaved version of the ROM would store data in the order 13570246. So your task is to move the blocks so they go 01234567 once again.</p>
+
+<p>Failing all the above, we have, we need 2 bytes from $ffdc (inverse) and 2 bytes from $ffde (checksum). Lastly, take the byte from $ffd5 and modulus its value by 0x10 (romstate).</p>
+
+<p>If inverse + checksum = 0xffff and romstate % 2 != 0, you have a plain, deinterleaved HiROM game.</p>
+
+<p>If the checksum does not computer but you still have the above rom state value, chances are the game is a beta cart. Beta carts will fail checksum math at both locations.</p>
+
+<h3>Nintendo 64</h3>
+
+<pre>FILE_TYPE = 4</pre>
+
+<p>To check if a ROM is interleaved, read the first 4 bytes. If they equal 0x80371240, the ROM is deinterleaved already. If they equal 0x37804012, you will need to deinterleave.</p>
+
+<p>Deinterleaving is simple. Read the file two bytes at a time, reverse the bytes, and write them out. Essentially, 1234 deinterleaved will be 2143 in the interleaved ROM.</p>
+
+<h3>Nintendo Game Boy</h3>
+
+<pre>FILE_TYPE = 5</pre>
+
+<p>Take the file size and modulus by 0x4000. If the result is not 0, there is a 0x200 byte SmartCard header that needs to be removed.</p>
+
+<h3>Sega Master System / Game Gear</h3>
+
+<pre>FILE_TYPE = 6</pre>
+
+<p>Read 4 bytes from $7ff4 and see if the result is the string "SEGA", if it is, the ROM is deinterleaved. Next check two bytes at $8 and see if they are 0xaabb. If they are, the ROM is interleaved. If both checks fail, you may have a hacked interleaved ROM or an unlicensed deinterleaved ROM.</p>
+
+<p>To deinterleave, you need to break the game into 16 KBYTE blocks (0x8000). To find how many blocks there are, take (file size - 0x200) / 0x8000. The deinterleave algorithm (assuming chunk is a character array with all bytes in the block) is:</p>
+
+<blockquote>
+<pre>int low = 1;
+int high = 0;
+array block;
+
+for(int i = 0; i < 8 * KBYTE; i ++)
+{
+
+  block[low]  = chunk[(8 * KBYTE + i)];
+  block[high] = chunk[i];
+
+  low  += 2;
+  high += 2;
+
+}
+
+return(implode("", block));</pre>
+</blockquote>
+
+<h3>Sega Genesis / Megadrive</h3>
+
+<pre>FILE_TYPE = 7</pre>
+
+<p>Read 4 bytes from $100 and see if the result is the string "SEGA", if it is, the ROM is deinterleaved. Next check two bytes at $8 and see if they are 0xaabb. If they are, the ROM is interleaved. If both checks fail, you may have a hacked interleaved ROM or an unlicensed deinterleaved ROM.</p>
+
+<p>To deinterleave, you need to break the game into 16 KBYTE blocks (0x8000). To find how many blocks there are, take (file size - 0x200) / 0x8000. The deinterleave algorithm (assuming chunk is a character array with all bytes in the block) is:</p>
+
+<blockquote>
+<pre>int low = 1;
+int high = 0;
+array block;
+
+for(int i = 0; i < 8 * KBYTE; i ++)
+{
+
+  block[low]  = chunk[(8 * KBYTE + i)];
+  block[high] = chunk[i];
+
+  low  += 2;
+  high += 2;
+
+}
+
+return(implode("", block));</pre>
+</blockquote>
+
+<h3>NEC TurboGrafx-16 / PC-Engine</h3>
+
+<pre>FILE_TYPE = 8</pre>
+
+<p>Take the file size and modulus by 0x1000. If the result is not 0, there is a 0x200 Magic Super Griffin header that needs to be removed.</p>
+
+<h3>Atari Lynx</h3>
+
+<pre>FILE_TYPE = 9</pre>
+
+<p>Read the first four bytes, if they match the string "LYNX", there is a 0x40 byte LYNX header to remove. Remove this for creating patches.</p>
+
+<p>When applying, you should restore this header after patching since it stores information about how to rotate the game's screen for games which play vertically.</p>
+
+</body>
+
+</html>
+
