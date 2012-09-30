@@ -23,6 +23,7 @@
 #include "DlgDoor.h"
 #include "DebugConsole.h"
 #include "DlgRomImage.h"
+#include "DlgObj.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,7 +69,6 @@ void CMapDeluxeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_BCK_MOV, m_EditBckMov);
 	DDX_Control(pDX, IDC_EDIT_UNK36, m_EditX36);
 	DDX_Control(pDX, IDC_EDIT_UNK54, m_EditX54);
-	DDX_Control(pDX, IDC_CHECK_UNK3E, m_CheckX3E);
 	DDX_Control(pDX, IDC_CHECK_UNK55, m_CheckX55);
 	DDX_Control(pDX, IDC_CHECK_BCKROLL, m_CheckBckRoll);
 	DDX_Control(pDX, IDC_EDIT_PLT_FRT, m_EditPltFrt);
@@ -122,7 +122,6 @@ BEGIN_MESSAGE_MAP(CMapDeluxeDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT_BCK_MOV, &CMapDeluxeDlg::OnEnChangeEditBckMov)
 	ON_EN_CHANGE(IDC_EDIT_UNK36, &CMapDeluxeDlg::OnEnChangeEditUnk36)
 	ON_EN_CHANGE(IDC_EDIT_UNK54, &CMapDeluxeDlg::OnEnChangeEditUnk54)
-	ON_BN_CLICKED(IDC_CHECK_UNK3E, &CMapDeluxeDlg::OnBnClickedCheckUnk3e)
 	ON_BN_CLICKED(IDC_CHECK_UNK55, &CMapDeluxeDlg::OnBnClickedCheckUnk55)
 	ON_BN_CLICKED(IDC_CHECK_BCKROLL, &CMapDeluxeDlg::OnBnClickedCheckBckroll)
 	ON_WM_HSCROLL()
@@ -153,7 +152,27 @@ BEGIN_MESSAGE_MAP(CMapDeluxeDlg, CDialog)
 	ON_BN_CLICKED(IDC_CHECK_EDG, &CMapDeluxeDlg::OnBnClickedCheckEdg)
 	ON_BN_CLICKED(IDC_BUTTON_ROM_IMAGE, &CMapDeluxeDlg::OnBnClickedButtonRomImage)
 	ON_BN_CLICKED(IDC_BUTTON_GAME_TEST, &CMapDeluxeDlg::OnBnClickedButtonGameTest)
+	ON_BN_CLICKED(IDC_BUTTON_OBJ, &CMapDeluxeDlg::OnBnClickedButtonObj)
 END_MESSAGE_MAP()
+
+/*void tst()
+{
+	CImage img;
+	img.Load(_T("D:\\Personal\\My Documents\\wwylele\\VC++编程\\DreamapDx\\TITLE.png"));
+	CFile of;
+	of.Open(_T("D:\\Personal\\My Documents\\wwylele\\VC++编程\\DreamapDx\\MapDeluxe\\res\\RomRebuild.gba"),
+		CFile::modeWrite);
+	of.Seek(ROM_IMAGE_OFFSET,CFile::begin);
+	COLORREF clr;
+	u16 cc;
+	for(int y=0;y<160;y++)for(int x=0;x<240;x++)
+	{
+		clr=img.GetPixel(x,y);
+		cc=R8G8B8X8toR5G5B5X1(clr);
+		of.Write(&cc,2);
+	}
+	of.Close();
+}*/
 
 
 // CMapDeluxeDlg 消息处理程序
@@ -560,7 +579,8 @@ void CMapDeluxeDlg::StepHeaderOut()
 	str.Format(_T("Level%d.Stage%d.Step%02d"),
 		step_header[cur_step].level+1,
 		step_header[cur_step].stage+1,
-		step_header[cur_step].step);
+		step_header[cur_step].step,
+		0x08800000+cur_step*0x4000);
 	m_EditStepNumber.SetWindowText(str.GetBuffer());
 
 	m_CheckLz77.SetCheck(step_header[cur_step].lz77?TRUE:FALSE);
@@ -584,7 +604,6 @@ void CMapDeluxeDlg::StepHeaderOut()
 	str.Format(_T("%d"),step_header[cur_step].x54);
 	m_EditX54.SetWindowTextW(str.GetBuffer());
 
-	m_CheckX3E.SetCheck(step_header[cur_step].x3E?TRUE:FALSE);
 	m_CheckX55.SetCheck(step_header[cur_step].x55?TRUE:FALSE);
 	m_CheckBckRoll.SetCheck(step_header[cur_step].bck_roll?TRUE:FALSE);
 
@@ -897,7 +916,6 @@ void CMapDeluxeDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
    pScrollBar->SetScrollPos(curpos);
 
 	CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
-	//PaintMap();
 	PaintMapTile(cur_x,cur_y);
 	PaintGraLib();
 	CDC* pDC=GetDC();
@@ -983,6 +1001,51 @@ void CMapDeluxeDlg::ReadRom(CFile& file)
 			file.Read(door[index],step_header[index].door_count*sizeof(DOOR_DATA));
 		}
 
+		//OBJ
+		if(step_header[index].obj_count)
+		{
+			file.Seek(0x00800000+index*0x4000+0x00000800,CFile::begin);
+			obj[index]=new OBJ_DATA_EX[step_header[index].obj_count];
+			for(u16 i=0;i<step_header[index].obj_count;i++)
+			{
+				file.Read(&obj[index][i].o[0],sizeof(OBJ_DATA));
+			}
+			for(u16 i=0;i<step_header[index].obj_count;i++)
+			{
+				if(obj[index][i].o[0].class_id==0x0006)
+				{
+					obj[index][i].is_folder=1;
+					obj[index][i].len=obj[index][i].o[0].paramB;
+					obj[index][i].fx=obj[index][i].o[0].x;
+					obj[index][i].fy=obj[index][i].o[0].y;
+					if(obj[index][i].len>3)throw;
+					file.Seek(0x00800000+index*0x4000+0x00000800+
+						obj[index][i].o[0].paramA*sizeof(OBJ_DATA),CFile::begin);
+					for(u8 j=0;j<obj[index][i].len;j++)
+					{
+						file.Read(&obj[index][i].o[j],sizeof(OBJ_DATA));
+					}
+				}
+				else
+				{
+					obj[index][i].is_folder=0;
+					obj[index][i].len=0;
+				}
+			}
+		}
+		//风
+		if(step_header[index].wind_index==0xFFFF)
+		{
+			wind[index].class_id=0xFFFF;
+		}
+		else
+		{
+			file.Seek(0x00800000+index*0x4000+0x00000800+
+				step_header[index].wind_index*sizeof(OBJ_DATA),CFile::begin);
+			file.Read(&wind[index],sizeof(OBJ_DATA));
+			//printf("%04X %02X %02X\n",wind[index].class_id,wind[index].paramA,wind[index].paramB);
+		}
+		
 	}
 
 	//起始页
@@ -1122,35 +1185,8 @@ void CMapDeluxeDlg::WriteRom(CFile& file)
 			file.Write(&nestlist.GetNext(pos),4);
 		}
 		file.Write(&F32,4);
-		/*
-		nestbuff=new u16[step_header[index].width*step_header[index].height];
-		file.Seek(0x00800000+index*0x4000+0x00003000,CFile::begin);
-		file.Write(&zero32,4);
-		nestcount=1;
-		for(int k=0;k<step_header[index].width*step_header[index].height;k++)
-		{
-			if(*(u32*)&map[1][index][k]==0xFFFFFFFF)
-			{
-				nestbuff[k]=0;
-			}
-			else
-			{
-				nestbuff[k]=nestcount;
-				nestcount++;
-				if(nestcount+1>0x1000/4)
-				{
-					delete[] nestbuff;
-					str.Format(_T("地图[Level%d.Stage%d.Step%02d]的掀开地图表溢出！\n写入文件已中断"),
-						step_header[index].level+1,step_header[index].stage+1,step_header[index].step);
-					MessageBox(str.GetBuffer());
-					m_Progress.SetPos(0);
-					return;
-				}
-				file.Write(&map[1][index][k],4);
-			}
-		}
-		file.Write(&F32,4);
-		*/
+		
+		//写入掀开地图映射
 		buff=new u8[step_header[index].width*step_header[index].height*2];
 		len=CompressLZ((u8*)(nestbuff),
 			step_header[index].width*step_header[index].height*2,
@@ -1173,6 +1209,58 @@ void CMapDeluxeDlg::WriteRom(CFile& file)
 		file.Seek(0x00800000+index*0x4000+0x00000100,CFile::begin);
 		file.Write(door[index],step_header[index].door_count*sizeof(DOOR_DATA));
 
+		//写入OBJ+Wind
+		u16 obj_top;
+		obj_top=step_header[index].obj_count;
+		OBJ_DATA odt;
+		for(u16 i=0;i<step_header[index].obj_count;i++)
+		{
+			file.Seek(0x00800000+index*0x4000+0x00000800+i*sizeof(OBJ_DATA),CFile::begin);
+			if(obj_top>40)
+			{
+				str.Format(_T("地图[Level%d.Stage%d.Step%02d]物件数量数据溢出！\n写入文件已中断"),
+				step_header[index].level+1,step_header[index].stage+1,step_header[index].step);
+				MessageBox(str.GetBuffer());
+				m_Progress.SetPos(0);
+				return;
+			}
+			if(obj[index][i].is_folder)
+			{
+				odt.class_id=0x0006;
+				odt.paramA=(u8)obj_top;
+				odt.paramB=(u8)obj[index][i].len;
+				odt.x=obj[index][i].fx;
+				odt.y=obj[index][i].fy;
+				file.Write(&odt,sizeof(OBJ_DATA));
+				file.Seek(0x00800000+index*0x4000+0x00000800+obj_top*sizeof(OBJ_DATA),CFile::begin);
+				for(u16 j=0;j<obj[index][i].len;j++)
+				{
+					odt=obj[index][i].o[j];
+					file.Write(&odt,sizeof(OBJ_DATA));
+				}
+				obj_top+=obj[index][i].len;
+			}
+			else
+			{
+				odt=obj[index][i].o[0];
+				file.Write(&odt,sizeof(OBJ_DATA));
+			}
+		}
+		if(wind[index].class_id==0xFFFF)
+		{
+			step_header[index].wind_index=0xFFFF;
+		}
+		else
+		{
+			step_header[index].wind_index=obj_top;
+			file.Seek(0x00800000+index*0x4000+0x00000800+obj_top*sizeof(OBJ_DATA),CFile::begin);
+			file.Write(&wind[index],sizeof(OBJ_DATA));
+
+		}
+
+		//写入头
+		file.Seek(0x00800000+index*0x4000,CFile::begin);
+		file.Write(&step_header[index],sizeof(STEP_HEADER));
 
 		m_Progress.SetPos(index+1);
 		UpdateData(FALSE);
@@ -1266,11 +1354,6 @@ void CMapDeluxeDlg::OnEnChangeEditUnk54()
 	step_header[cur_step].x54=(u8)StrToI(str);
 }
 
-void CMapDeluxeDlg::OnBnClickedCheckUnk3e()
-{
-	if(cur_step==0xFFFF)return;
-	step_header[cur_step].x3E=m_CheckX3E.GetCheck()?1:0;
-}
 
 void CMapDeluxeDlg::OnBnClickedCheckUnk55()
 {
@@ -2135,7 +2218,10 @@ void CMapDeluxeDlg::OnBnClickedButtonGameTest()
 	ZeroMemory(&pi,sizeof(pi));
 	ZeroMemory(&si,sizeof(si));
 	si.cb=sizeof(si);
-	CreateProcess(0,str.GetBuffer(),0,0,0,0,0,0,&si,&pi);
+	if(!CreateProcess(0,str.GetBuffer(),0,0,0,0,0,0,&si,&pi))
+	{
+		MessageBox(_T("无法执行程序VisualBoyAdvance.exe\n请将模拟器命名为\"VisualBoyAdvance.exe\"并放到与编辑器相同目录下"),_T("未找到模拟器"));
+	}
 }
 
 void CMapDeluxeDlg::PaintMapTile(int x, int y)
@@ -2197,3 +2283,37 @@ void CMapDeluxeDlg::PaintMapTile(int x, int y)
 	}
 }
 
+void CMapDeluxeDlg::OnBnClickedButtonObj()
+{
+	if(cur_step==0xFFFF)return;
+	CDlgObj dlg;
+	PaintMap();
+
+	dlg.width=step_header[cur_step].width*16;
+	dlg.height=step_header[cur_step].height*16;
+	CDC* pDC=GetDC();
+	dlg.m_BmpBck.CreateCompatibleBitmap(pDC,dlg.width,dlg.height);
+	dlg.m_BmpOut.CreateCompatibleBitmap(pDC,dlg.width,dlg.height);
+	
+	/*CDC newDC,newDC2;
+	newDC.CreateCompatibleDC(pDC);
+	newDC2.CreateCompatibleDC(pDC);*/
+
+	m_TmpDC.SelectObject(&m_BmpMap);
+	m_TmpDC2.SelectObject(&dlg.m_BmpBck);
+	m_TmpDC2.BitBlt(0,0,dlg.width,dlg.height,&m_TmpDC,0,0,SRCCOPY);
+
+
+	ReleaseDC(pDC);
+
+	dlg.m_pTmpDC=&m_TmpDC;
+	dlg.m_pTmpDC2=&m_TmpDC2;
+	dlg.pobjlist=&obj[cur_step];
+	dlg.pcount=&step_header[cur_step].obj_count;
+	dlg.pobj_vertical=&step_header[cur_step].obj_vertical;
+	
+	dlg.DoModal();
+
+	//newDC.DeleteDC();
+	//newDC2.DeleteDC();
+}

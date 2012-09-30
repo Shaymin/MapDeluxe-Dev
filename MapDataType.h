@@ -1,5 +1,6 @@
 //游戏数据结构
 #pragma once
+
 struct STEP_HEADER
 {
 	u8 level;
@@ -26,10 +27,10 @@ struct STEP_HEADER
 	u32 ptr_gra_map_bck;
 	u16 bck_mov;
 	u16 x36;
-	s16 wind_index;//
+	u16 wind_index;
 	u16 door_count;
 	u16 obj_count;
-	u16 x3E;
+	u16 obj_vertical;
 
 	u32 gra_ani_index;
 	u32 ptr_door;
@@ -44,7 +45,6 @@ struct STEP_HEADER
 	u8 spc_map;
 
 };
-
 struct GRID_DATA
 {
 	u16 gra;
@@ -105,9 +105,18 @@ union DOOR_DATA
 };
 struct OBJ_DATA
 {
-	u16 x00;
-	u8 x02;
-	u8 ext_len;
-	u16 pos_x;
-	u16 pos_y;
+	u16 class_id;
+	u8 paramA;
+	u8 paramB;
+	u16 x;
+	u16 y;
+};
+
+struct OBJ_DATA_EX
+{
+	u16 is_folder;
+	u16 len;
+	u16 fx,fy;//Just use for folder
+	OBJ_DATA o[3];// This is a waste of memory
+	u32 GetPosCode(bool l2r,bool u2d,bool vert);
 };

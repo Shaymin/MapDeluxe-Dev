@@ -120,7 +120,10 @@
     <ClCompile Include="CodeTran.cpp" />
     <ClCompile Include="DlgDoor.cpp" />
     <ClCompile Include="DlgDoorAdd.cpp" />
+    <ClCompile Include="DlgObj.cpp" />
+    <ClCompile Include="DlgObjParam.cpp" />
     <ClCompile Include="DlgResize.cpp" />
+    <ClCompile Include="DlgRomImage.cpp" />
     <ClCompile Include="DlgToolTip.cpp" />
     <ClCompile Include="LZ77.cpp" />
     <ClCompile Include="MapDeluxe.cpp" />
@@ -135,7 +138,10 @@
     <ClInclude Include="DebugConsole.h" />
     <ClInclude Include="DlgDoor.h" />
     <ClInclude Include="DlgDoorAdd.h" />
+    <ClInclude Include="DlgObj.h" />
+    <ClInclude Include="DlgObjParam.h" />
     <ClInclude Include="DlgResize.h" />
+    <ClInclude Include="DlgRomImage.h" />
     <ClInclude Include="LZ77.h" />
     <ClInclude Include="MapDataType.h" />
     <ClInclude Include="MapDeluxe.h" />

@@ -11,6 +11,8 @@
 #define IDD_DOOR                        134
 #define IDD_DOOR_ADD                    135
 #define IDD_ROM_IMAGE                   136
+#define IDD_OBJ                         137
+#define IDD_OBJ_PARAM                   138
 #define IDC_TREE_FILE                   1000
 #define IDC_BUTTON_OPEN                 1001
 #define IDC_BUTTON_SAVE                 1002
@@ -94,7 +96,6 @@
 #define IDC_BUTTON1                     1083
 #define IDC_CLEAR_MAP                   1083
 #define IDC_EDIT_DOOR_P1                1084
-#define IDC_CHECK1                      1084
 #define IDC_ALLOW_KEY_CONTROL           1084
 #define IDC_EDIT_DOOR_P2                1085
 #define IDC_EDIT_DOOR_P3                1086
@@ -106,6 +107,27 @@
 #define IDC_BUTTON_ROM_IMAGE            1092
 #define IDC_BUTTON_IMP_ROM_IMAGE        1093
 #define IDC_BUTTON_GAME_TEST            1094
+#define IDC_BUTTON_OBJ                  1095
+#define IDC_OBJ_HSCROLL                 1096
+#define IDC_OBJ_VSCROLL                 1097
+#define IDC_CHECK_GRID_ALIGN            1098
+#define IDC_STATIC_OBJ_HELP             1101
+#define IDC_STATIC_OBJ_CLASS            1108
+#define IDC_COMBO_OBJ_CLASS             1109
+#define IDC_EDIT_OBJ_P1                 1110
+#define IDC_STATIC_OBJ_P1               1111
+#define IDC_EDIT_OBJ_P2                 1112
+#define IDC_STATIC_OBJ_P2               1113
+#define IDC_EDIT_OBJ_P3                 1114
+#define IDC_STATIC_OBJ_P3               1115
+#define IDC_EDIT_OBJ_P4                 1116
+#define IDC_STATIC_OBJ_P4               1117
+#define IDC_CHECK_OBJ_FLOAT             1118
+#define IDC_CHECK1                      1119
+#define IDC_CHECK_OBJ_VERTICAL          1119
+
+
+
 
 // Next default values for new objects
 // 

@@ -246,3 +246,80 @@ TCHAR* CodeTran_Det(u8 code)
 	default:return _T("?");
 	}
 }
+
+TCHAR* CodeTran_Obj(u16 code)
+{
+	switch(code)
+	{
+	case 0x0001:return _T("瓦多迪");
+	case 0x0101:return _T("岩石");
+	case 0x0201:return _T("睡觉");
+	case 0x0301:return _T("扫帚");
+	case 0x0401:return _T("企鹅");
+	case 0x0501:return _T("激光");
+	case 0x0601:return _T("雪人");
+	case 0x0701:return _T("回力标");
+	case 0x0801:return _T("蘑菇");
+	case 0x0901:return _T("瓦多度");
+	case 0x0A01:return _T("刺球");
+	case 0x0B01:return _T("光明");
+	case 0x0C01:return _T("苍蝇");
+	case 0x0D01:return _T("卡布");
+	case 0x0E01:return _T("巨爆");
+	case 0x0F01:return _T("爆炸坚果");
+	case 0x1001:return _T("小鸟");
+	case 0x1101:return _T("小炮");
+	case 0x1201:return _T("闪电");
+	case 0x1301:return _T("旋风");
+	case 0x1401:return _T("乌贼");
+	case 0x1501:return _T("Scarfy");
+	case 0x1601:return _T("球球");
+	case 0x1701:return _T("超人");
+	case 0x1801:return _T("火焰");
+	case 0x1901:return _T("海葵");
+	case 0x1A01:return _T("蛙");
+	case 0x1B01:return _T("鱼");
+	case 0x1C01:return _T("剑士A");
+	case 0x1D01:return _T("剑士B");
+	case 0x1E01:return _T("Puppy.JR");
+	case 0x1F01:return _T("Puppy.JR苹果");
+	case 0x2001:return _T("Puppy.JRM果");
+	case 0x2101:return _T("海螺");
+	case 0x2201:return _T("车轮");
+	case 0x2301:return _T("火球");
+	case 0x2401:return _T("针刺");
+	case 0x2501:return _T("UFO");
+	//case 0x2601:return _T("阳伞");//
+	case 0x2701:return _T("猪");
+	//case 0x2801:return _T("消失");//
+	//case 0x2901:return _T("不动的锤子");//
+	//case 0x2A01:return _T("贴图错误");//
+	case 0x0003:return _T("Dedede");
+	case 0x0103:return _T("画画");
+	case 0x0203:return _T("梅塔");
+	case 0x0303:return _T("挖土机");
+	case 0x0403:return _T("日月");
+	case 0x0503:return _T("大树");
+	case 0x0603:return _T("云");
+	case 0x0703:return _T("梦魇第一形态");
+	case 0x0803:return _T("梦魔第二形态");
+	//case 0x0903:return _T("");//
+	//case 0x0A03:return _T("");//
+	//case 0x0004:return _T("怪物消失");//
+	case 0x0104:return _T("1UP");
+	case 0x0204:return _T("M果");
+	case 0x0304:return _T("棒棒糖");
+	case 0x0404:return _T("药瓶");
+	case 0x0504:return _T("星星棒");
+	case 0x0105:return _T("按钮");
+	case 0x0205:return _T("导火索头");
+	case 0x0305:return _T("大炮??");
+	case 0x0405:return _T("传送星");
+	//case 0x0505:return _T("");//
+	case 0x0605:return _T("大炮");
+	//case 0x0705:return _T("");//
+	case 0x0805:return _T("风");
+	case 0x0008:return _T("梅塔军队");
+	default:return _T("?");
+	}
+}

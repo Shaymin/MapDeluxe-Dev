@@ -65,7 +65,9 @@ public:
 
 	GRID_DATA* map[2][STEP_INDEXING_COUNT];//map[0][]=mainmap[],map[1][]=nestmap[]
 	DOOR_DATA* door[STEP_INDEXING_COUNT];
-	OBJ_DATA* obj[STEP_INDEXING_COUNT];//还没用呢
+	//OBJ_DATA* obj[STEP_INDEXING_COUNT];//弃用
+	OBJ_DATA_EX* obj[STEP_INDEXING_COUNT];
+	OBJ_DATA wind[STEP_INDEXING_COUNT];
 
 	u16 rom_image[240*160];
 	
@@ -233,4 +235,5 @@ public:
 	afx_msg void OnBnClickedButtonGameTest();
 	CButton m_ButtonRomImage;
 	CButton m_ButtonGameTest;
+	afx_msg void OnBnClickedButtonObj();
 };
