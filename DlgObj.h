@@ -27,7 +27,7 @@ public:
 	CBitmap m_BmpBck;
 	CBitmap m_BmpOut;
 	CDC *m_pTmpDC,*m_pTmpDC2;
-
+	u32 x,y;
 	u32 width,height;
 
 	OBJ_DATA_EX** pobjlist;

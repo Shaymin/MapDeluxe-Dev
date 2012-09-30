@@ -19,10 +19,8 @@
 // 中文(简体，中国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
-#ifdef _WIN32
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 #pragma code_page(936)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -117,7 +115,6 @@ BEGIN
     LTEXT           "预设值",IDC_STATIC_GRA_PRESET,300,90,36,12
     LTEXT           "unknown0x36",IDC_STATIC_UNK36,120,90,48,12
     EDITTEXT        IDC_EDIT_UNK36,168,90,48,12,ES_AUTOHSCROLL
-    CONTROL         "unknown0x3E",IDC_CHECK_UNK3E,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,79,54,12
     LTEXT           "动态瓦图库",IDC_STATIC_GRA_ANI,336,102,42,12
     LTEXT           "unknown0x54",IDC_STATIC_UNK54,120,102,48,12
     EDITTEXT        IDC_EDIT_UNK54,168,102,48,12,ES_AUTOHSCROLL
@@ -252,17 +249,14 @@ BEGIN
 END
 
 
-
-
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,0,1
- PRODUCTVERSION 3,0,0,1
+ FILEVERSION 4,0,0,1
+ PRODUCTVERSION 4,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -278,11 +272,11 @@ BEGIN
         BLOCK "080403a8"
         BEGIN
             VALUE "CompanyName", "wwylele"
-            VALUE "FileVersion", "3.0.0.1"
+            VALUE "FileVersion", "4.0.0.1"
             VALUE "InternalName", "MapDeluxe.exe"
             VALUE "OriginalFilename", "MapDeluxe.exe"
             VALUE "ProductName", "MapDeluxe-Dev"
-            VALUE "ProductVersion", "3.0.0.1"
+            VALUE "ProductVersion", "4.0.0.1"
         END
     END
     BLOCK "VarFileInfo"

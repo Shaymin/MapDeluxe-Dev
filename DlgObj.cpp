@@ -103,18 +103,18 @@ void CDlgObj::PresentObj(CDC* pDC)
 	m_pTmpDC->SelectObject(&m_BmpOut);
 	m_pTmpDC2->SelectObject(&m_BmpBck);
 	m_pTmpDC->BitBlt(0,0,width,height,m_pTmpDC2,0,0,SRCCOPY);
-
+	static CPen PenCur(PS_SOLID,1,RGB(255,0,0));
 	CPen PenObj[9];
-	PenObj[1].CreatePen(PS_SOLID,3,RGB(255,0,0));
-	PenObj[3].CreatePen(PS_SOLID,3,RGB(255,0,255));
-	PenObj[4].CreatePen(PS_SOLID,3,RGB(0,0,255));
-	PenObj[5].CreatePen(PS_SOLID,3,RGB(255,128,0));
+	PenObj[1].CreatePen(PS_SOLID,3,RGB(255,0,0));//敌人
+	PenObj[3].CreatePen(PS_SOLID,3,RGB(255,0,255));//BOSS
+	PenObj[4].CreatePen(PS_SOLID,3,RGB(0,0,255));//道具
+	PenObj[5].CreatePen(PS_SOLID,3,RGB(255,128,0));//特殊物件
 	PenObj[6].CreatePen(PS_SOLID,3,RGB(0,255,0));
 	PenObj[7].CreatePen(PS_SOLID,3,RGB(0,255,128));
-	PenObj[8].CreatePen(PS_SOLID,3,RGB(128,0,255));
+	PenObj[8].CreatePen(PS_SOLID,3,RGB(128,0,255));//梅塔军队
 
 	PenObj[0].CreatePen(PS_SOLID,3,RGB(0,0,0));
-	PenObj[2].CreatePen(PS_SOLID,3,RGB(255,255,0));
+	PenObj[2].CreatePen(PS_SOLID,3,RGB(255,255,0));//高亮
 	CBrush BrushNull;
 	BrushNull.CreateStockObject(NULL_BRUSH);
 	m_pTmpDC->SelectObject(&BrushNull);
@@ -147,6 +147,18 @@ void CDlgObj::PresentObj(CDC* pDC)
 		}
 	}
 	m_pTmpDC->SetBkMode(TRANSPARENT);
+	CFont   MyFont; 
+	MyFont.CreateFont( 
+		12,6,
+        0,0,FW_BOLD, 
+        0,0,0, 
+        DEFAULT_CHARSET, 
+		OUT_CHARACTER_PRECIS, 
+		CLIP_CHARACTER_PRECIS, 
+		DEFAULT_QUALITY, 
+		DEFAULT_PITCH|FF_DONTCARE, 
+		_T("宋体")); 
+	m_pTmpDC->SelectObject(MyFont); 
 	for(u16 i=0;i<*pcount;i++)
 	{
 		if((*pobjlist)[i].is_folder==0)
@@ -155,8 +167,15 @@ void CDlgObj::PresentObj(CDC* pDC)
 			m_pTmpDC->TextOut((*pobjlist)[i].o[0].x,(*pobjlist)[i].o[0].y,str.GetBuffer(),str.GetLength());
 		}
 	}
-
-
+	
+	if(x!=0xFFFF)
+	{
+		m_pTmpDC->SelectObject(&BrushNull);
+		m_pTmpDC->SelectObject(&PenCur);
+		m_pTmpDC->Rectangle((x/16)*16,(y/16)*16,(x/16)*16+16,(y/16)*16+16);
+		
+	}
+	
 	RECT hsrc,vsrc;
 	int hsp=m_HScroll.GetScrollPos();
 	int vsp=m_VScroll.GetScrollPos();
@@ -290,8 +309,8 @@ void CDlgObj::OnMouseMove(UINT nFlags, CPoint point)
 	ScreenToClient(&hsrc);
 	ScreenToClient(&vsrc);
 
-	int x=(int)(point.x+hsp-hsrc.left);
-	int y=(int)(point.y+vsp-vsrc.top);
+	x=(int)(point.x+hsp-hsrc.left);
+	y=(int)(point.y+vsp-vsrc.top);
 	if(moving && cur_obj!=0xFFFF)
 	{
 		x-=mdx;
